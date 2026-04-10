@@ -1,172 +1,170 @@
-# Server Setup (Fresh Linux Machine)
+Server Setup (Fresh Linux Machine)
 
-This section explains how to deploy the project on a fresh Linux server.
+This guide explains how to deploy the project on a fresh Linux server.
+
 The following tools will be installed:
 
-- Docker
-- Docker Compose
-- Jenkins
-- Git
-- OpenSSH
+Docker
+Docker Compose
+Jenkins
+Git
+OpenSSH
 
-These steps assume an Ubuntu/Debian-based system.
+These instructions assume an Ubuntu/Debian-based system.
 
-### 1. Update the System
+1. Update the System
 
-Update package lists and upgrade installed packages.
+Update package lists and upgrade existing packages.
 
-` sudo apt update`
-`sudo apt upgrade -y `
-
-### 2. Install Base Tools
+sudo apt update
+sudo apt upgrade -y
+2. Install Base Tools
 
 Install Git and required utilities.
 
-`sudo apt install git curl apt-transport-https ca-certificates software-properties-common -y`
+sudo apt install git curl apt-transport-https ca-certificates software-properties-common -y
+3. Install Docker
 
-### 3. Install Docker
+Install Docker Engine.
 
-Install Docker engine.
+sudo apt install docker.io -y
 
-`sudo apt install docker.io -y`
+Enable and start Docker service.
 
-Start and enable Docker service.
+sudo systemctl enable docker
+sudo systemctl start docker
 
-`sudo systemctl enable docker`
-`sudo systemctl start docker`
+Verify Docker installation.
 
-Verify installation.
+docker --version
+4. Allow User to Run Docker
 
-`docker --version`
+Add the current user to the Docker group so Docker commands can run without sudo.
 
-### 4. Allow User to Run Docker
-
-Add the current user to the Docker group.
-
-`sudo usermod -aG docker $USER`
-`newgrp docker`
+sudo usermod -aG docker $USER
+newgrp docker
 
 Test Docker.
 
-`docker run hello-world`
-
-### 5. Install Docker Compose
+docker run hello-world
+5. Install Docker Compose
 
 Install Docker Compose plugin.
 
-`sudo apt install docker-compose-plugin -y`
+sudo apt install docker-compose-plugin -y
 
 Verify installation.
 
-`docker compose version`
-
-### 6. Install Jenkins
+docker compose version
+6. Install Jenkins
 
 Jenkins requires Java.
 
-Install Java.
+Install Java:
 
-`sudo apt install openjdk-17-jdk -y`
+sudo apt install openjdk-17-jdk -y
 
 Verify Java installation.
 
-```java -version
+java -version
 Add Jenkins Repository
+
+Add the Jenkins repository key.
+
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
 /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+Add Jenkins repository.
+
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-/etc/apt/sources.list.d/jenkins.list > /dev/null```
+/etc/apt/sources.list.d/jenkins.list > /dev/null
 
-Update packages.
+Update package list again.
 
-`sudo apt update`
+sudo apt update
 
 Install Jenkins.
 
-`sudo apt install jenkins -y`
-
-### 7. Start Jenkins
+sudo apt install jenkins -y
+7. Start Jenkins
 
 Enable and start Jenkins service.
 
-`sudo systemctl enable jenkins`
-`sudo systemctl start jenkins`
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
 
 Check Jenkins status.
 
-`sudo systemctl status jenkins`
+sudo systemctl status jenkins
+8. Access Jenkins
 
-### 8. Access Jenkins
-
-Open Jenkins in a browser.
+Open Jenkins in your browser.
 
 http://SERVER-IP:8080
 
-Get the initial admin password.
+Retrieve the initial admin password.
 
-`sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
-Paste this password in the Jenkins setup page and install Suggested Plugins.
+Paste the password into the Jenkins setup page and install Suggested Plugins.
 
-### 9. Allow Jenkins to Use Docker
+9. Allow Jenkins to Use Docker
 
-Add Jenkins user to the Docker group.
+Add the Jenkins user to the Docker group.
 
-`sudo usermod -aG docker jenkins`
+sudo usermod -aG docker jenkins
 
 Restart Jenkins.
 
-`sudo systemctl restart jenkins
-`
-### 10. Login to Docker Hub (One Time)
+sudo systemctl restart jenkins
+10. Login to Docker Hub (One Time)
 
 Login once on the server.
 
-`docker login -u ybtamiru
-`
-After login, Jenkins will be able to push Docker images automatically.
+docker login -u ybtamiru
 
-### 11. Create Jenkins Freestyle Job
+After logging in, credentials are stored locally so Jenkins can push Docker images automatically.
+
+11. Create Jenkins Freestyle Job
 
 Inside Jenkins:
 
 Click New Item
 Select Freestyle Project
-Enter a name (example: php-todo-cicd)
+Enter a name
 
-### 12. Configure Git Repository
+Example:
 
-In Jenkins:
+php-todo-cicd
+12. Configure Git Repository
+
+Inside Jenkins configuration:
 
 Source Code Management → Git
 
 Add your repository URL.
 
 https://github.com/YOUR_USERNAME/devops-php-todo.git
+13. Add Build Commands
 
-### 13. Add Build Commands
+Add a Build Step → Execute Shell.
 
-Add a build step:
+Insert the following commands:
 
-Execute Shell
+docker build -t ybtamiru/php-todo-app:latest -f Dockerfile .
 
-Add the following commands.
+docker push ybtamiru/php-todo-app:latest
 
-`docker build -t ybtamiru/php-todo-app:latest -f Dockerfile .
-`
-`docker push ybtamiru/php-todo-app:latest
-`
-`docker compose pull
-``docker compose up -d
-`
-These commands:
+docker compose pull
+docker compose up -d
+
+These commands will:
 
 Build the Docker image
 Push the image to Docker Hub
-Deploy containers using Docker Compose
-
-### 14. Run the Jenkins Pipeline
+Deploy the containers using Docker Compose
+14. Run the Jenkins Pipeline
 
 Click Build Now in Jenkins.
 
@@ -176,8 +174,7 @@ Pull code from GitHub
 Build Docker image
 Push image to Docker Hub
 Deploy containers on the server
-
-### 15. Access the Application
+15. Access the Application
 
 After deployment:
 
@@ -185,7 +182,7 @@ Application:
 
 http://SERVER-IP
 
-Jenkins:
+Jenkins dashboard:
 
 http://SERVER-IP:8080
 Deployment Architecture
