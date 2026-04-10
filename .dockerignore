@@ -1,0 +1,16 @@
+# This Files are going to be ignored when docker is build
+.git
+.env
+Architecture/
+Jenkinsfile/
+README.md
+
+# Ignore OS generated files
+docker-compose.yml
+
+# Ignore OS generated files
+.vscode/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

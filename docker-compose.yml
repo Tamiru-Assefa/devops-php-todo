@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+
+  web:
+    build: .                   #Build from the dockerfile image
+    container_name: php-app
+    ports:
+      - "8080:80"              #For ward the base image port 80 to internal container 8080
+    volumes:
+      - ./app:/var/www/html   # Bind mount: mirrors host code to container
+    depends_on:
+      - db                    #First DB Serive should start
+    networks:
+      - task-network
+
+  db:
+    image: mysql:8.4
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql  # Namedvolume: persists DB data even if container removed but don't mirror
+    networks:
+      - task-network
+
+volumes:
+  db-data:  # Namedvolume managed by Docker, persistent storage
+
+networks:
+  task-network:  # Dockers Default network to isolate, i create d/t network.
+    driver: bridge
