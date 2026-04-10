@@ -451,7 +451,7 @@ The CI workflow operates as follows:
 Inside the Jenkins Freestyle job, the following commands are executed:
 
 ```
-docker build -t ybtamiru/php-todo-app:latest -f docker/Dockerfile .
+docker build -t ybtamiru/php-todo-app:latest -f Dockerfile .
 docker push ybtamiru/php-todo-app:latest
 docker compose pull
 docker compose up -d
