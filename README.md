@@ -163,13 +163,11 @@ devops-php-todo
 │   ├── db.php
 │   └── styles.css
 │
-├── docker/
-│   └── Dockerfile              # Docker image definition
+├──── Dockerfile                # Docker image definition
 │
 ├── docker-compose.yml          # Multi-container orchestration
 │
 ├── .env                        # Environment variables for database
-├── .env.example                # Template for environment variables
 │
 ├── .dockerignore               # Files excluded during Docker build
 │
