@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   web:
-    build: .                   #Build from the dockerfile image
+    image: ybtamiru/php-todo-app:latest                   #get the image from my docker repo
     container_name: php-app
     ports:
       - "8080:80"              #For ward the base image port 80 to internal container 8080
