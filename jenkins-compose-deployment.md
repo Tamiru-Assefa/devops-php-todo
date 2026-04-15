@@ -1,4 +1,4 @@
-# DevOps PHP To-Do List Application
+# Implementing a Robust DevOps Workflow with Jenkins & Docker Compose
 
 ## Project Overview
 
@@ -456,12 +456,20 @@ docker push ybtamiru/php-todo-app:latest
 docker compose pull
 docker compose up -d
 ```
+Finally Build the Job and Every thing is DONE!!!
 
 These commands ensure that:
 
 * Previous containers are stopped
 * New images are built
 * Containers are redeployed
+
+AFTER ALL YOU CAN VERIFY BY RUNNING THE FOLLOWING CMDS ON THE HOST MACHINE:
+- `docker images`     LIST ALL AVALIABLE IMAGES
+- `docker container ls`        LIST ALL CONTAINER WITH STATUS
+- `docker volume ls`           LIST ALL CREATED VOLUMES
+- `docker network ls`          LIST ALL CREATED NETWORKS
+- `docker inspect php-app`     GIVES ALL INFO ABOUT THE CONTAINER WITH JSON FORMAT
 
 ---
 
