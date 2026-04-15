@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s         # How often to collect data
+
+scrape_configs:             # Who to monitor
+
+  - job_name: "prometheus"        # Prometheus is monitoring itself
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "cadvisor"            # Prometheus is monitoring cAdvisor
+    static_configs:
+      - targets: ["cadvisor:8080"]
