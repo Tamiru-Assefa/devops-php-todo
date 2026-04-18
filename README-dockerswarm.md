@@ -217,7 +217,7 @@ devops-php-todo
 ├── README-dockerswarm-deployment.md         # Project 2 documentation ✅ NEW
 │
 └── README.md                   # Main project overview
-
+```
 
 ## 🐳 Docker Implementation (Project 2 — Swarm Upgrade)
 
