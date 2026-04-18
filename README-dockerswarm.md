@@ -108,7 +108,7 @@ The project is deployed on 3 AWS EC2 instances, simulating a clustered environme
 
 ## High-Level Architecture
 
-![Architecture](Architecture/CICm.png)
+![Architecture](Architecture/DockerSwarm.png)
 
 ### 🖼️ High-Level CI/CD + Swarm Architecture
 
@@ -129,7 +129,7 @@ The system runs a PHP Todo application with a MySQL database, deployed as a dist
 
 ### 🖼️ Docker Swarm Cluster Visualization
 
-![Architecture](Architecture/CICD%.png)
+![Architecture](Architecture/Swarm%20Visual.png)
 
 This diagram represents the internal Docker Swarm cluster structure.
 
@@ -161,7 +161,7 @@ This setup ensures scalability, monitoring, and service discovery within the clu
 
 ### 🖼️ AWS Infrastructure Architecture
 
-![Architecture](Architecture/CICD%.png)
+![Architecture](Architecture/AWS%20Arch.png)
 
 This diagram shows the AWS infrastructure used for deployment.
 
