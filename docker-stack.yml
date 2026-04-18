@@ -1,0 +1,112 @@
+version: "3.8"
+
+services:
+
+  web:
+    image: yourdockerhubusername/php-todo:${IMAGE_TAG}
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+    deploy:
+      replicas: 2
+
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+      restart_policy:
+        condition: on-failure
+
+      placement:
+        constraints:
+          - node.labels.role == web
+
+      labels:
+        - "app=todo"
+        - "tier=frontend"
+
+      update_config:
+        parallelism: 1    # Update ONE container at a time then wait 10sec
+        delay: 10s
+        order: start-first          # Start NEW container first
+        failure_action: rollback    # If New Container fail rollback
+
+      rollback_config:
+        parallelism: 1       # RollBack 1 container at a time
+        delay: 5s
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"] #opening website from terminal
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+
+  db:
+    image: mysql:5.7
+
+    environment:
+      MYSQL_DATABASE: todo
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      
+
+    secrets:
+    - mysql_root_password
+    - mysql_user
+    - mysql_password
+       
+
+    volumes:
+      - db-data:/var/lib/mysql
+
+    networks:
+      - app-network
+
+    deploy:
+      replicas: 1
+
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+      restart_policy:
+        condition: on-failure
+
+      placement:
+        constraints:
+          - node.labels.role == db
+
+      labels:
+        - "app=todo"
+        - "tier=backend"
+
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] #Ask MySQL server: are you alive?
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+networks:
+  app-network:
+    driver: overlay
+
+
+volumes:
+  db-data:
+
+secrets:
+  mysql_root_password:
+    external: true
+  mysql_user:
+    external: true
+  mysql_password:
+    external: true

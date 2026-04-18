@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'yourdockerhubusername/php-todo' 
+        IMAGE_TAG = "${BUILD_NUMBER}" 
+        SERVICE_NAME = "todo-app_web"
+    }
+
+    stages {
+
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+            }
+        }
+
+        stage('Deploy to Swarm') {
+            steps {
+                sh '''
+                export IMAGE_TAG=${BUILD_NUMBER}
+                docker stack deploy -c docker-stack.yml todo-app
+                '''
+            }
+        }
+    }
+}
