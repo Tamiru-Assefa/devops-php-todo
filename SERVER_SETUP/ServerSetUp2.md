@@ -296,7 +296,9 @@ Run these on Manager Node:
 #### 🌐 21. APPLICATION ACCESS
 http://<ANY-NODE-IP>:8080
 
-### Some revision on Docker Stack YML and Jenkins pipeline file
+---  DONE!!! --- 
+
+# Some revision on Docker Stack YML and Jenkins pipeline file
 
 #### Explaining the docker-stack.yml file.
 📦 Image Versioning (CI/CD Integration)
@@ -494,83 +496,102 @@ healthcheck:
 - improved reliability
 
 
------ 
-explains how the Jenkins pipeline is configured to build, tag, and deploy the Docker Swarm application.
+---
+
+# Explains how the Jenkins pipeline is configured to build, tag, and deploy the Docker Swarm application.
 
 ⚙️ Environment Variables
+```
 environment {
     IMAGE_NAME = 'yourdockerhubusername/php-todo'
     IMAGE_TAG = "${BUILD_NUMBER}"
     SERVICE_NAME = "todo-app_web"
 }
+```
 🧠 Explanation:
-IMAGE_NAME
+
+*IMAGE_NAME* 
 → Defines the Docker Hub repository name where the image will be stored
 
-IMAGE_TAG
+
+*IMAGE_TAG* 
+
 → Uses Jenkins built-in variable ${BUILD_NUMBER} to version each image automatically
 → Every Jenkins build generates a unique tag
 
 👉 Example:
-
+```
 Build #1 → php-todo:1
 Build #2 → php-todo:2
-SERVICE_NAME
+```
+*SERVICE_NAME* 
 → Defines the Swarm service name (used for reference or future updates)
 
 ✔ This setup enables:
 
-automatic versioning
-traceable deployments
-clean CI/CD pipeline structure
-🏗️ Docker Build Stage
-docker build -t $IMAGE_NAME:$IMAGE_TAG .
+- automatic versioning
+- traceable deployments
+- clean CI/CD pipeline structure
+
+  
+**🏗️ Docker Build Stage**
+
+`docker build -t $IMAGE_NAME:$IMAGE_TAG .`
+
 🧠 Explanation:
-Builds Docker image from the project directory
-Tags the image using:
-repository name (IMAGE_NAME)
+
+Builds Docker image from the project directory, && 
+Tags the image using:-
+repository name (IMAGE_NAME) &&
 build number (IMAGE_TAG)
 
 👉 Result:
 
-yourdockerhubusername/php-todo:5
+ybtamiru/php-todo:5
 
 ✔ This ensures:
 
-every build creates a unique version
-no overwriting of previous images
-📤 Deployment Stage (Swarm Stack)
-export IMAGE_TAG=${BUILD_NUMBER}
-docker stack deploy -c docker-stack.yml todo-app
+- Every build creates a unique version
+- no overwriting of previous images
+  
+**📤 Deployment Stage (Swarm Stack)**
+`export IMAGE_TAG=${BUILD_NUMBER}`
+
+`docker stack deploy -c docker-stack.yml todo-app`
+
 🧠 Explanation:
-export IMAGE_TAG=${BUILD_NUMBER}
+`export IMAGE_TAG=${BUILD_NUMBER}` 
 → passes the Jenkins build number into the stack file dynamically
-docker stack deploy
+
+`docker stack deploy` 
 → deploys the entire application as a Swarm stack
-todo-app
-→ name of the stack (group of services)
-🧠 What happens during deployment:
+
+
+### 🧠 What happens during deployment:
 
 When this command runs:
-
+```NOTE
 Jenkins → passes IMAGE_TAG
         → Swarm reads docker-stack.yml
         → pulls correct image version
         → updates services
         → restarts containers if needed
-🔄 GitHub Integration (Trigger Flow)
+```
+
+**🔄 GitHub Integration (Trigger Flow)**
 
 When code is pushed to GitHub:
-
+```NOTE
 GitHub push → Jenkins webhook (or polling)
              → Jenkins pipeline starts
              → Docker image built
              → Image pushed to registry
              → Swarm stack deployed
+```
 
 ✔ This ensures:
 
-fully automated CI/CD
-no manual deployment required
-continuous delivery workflow
+- fully automated CI/CD
+- No manual deployment required
+- continuous delivery workflow
 
