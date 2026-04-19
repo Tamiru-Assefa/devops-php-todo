@@ -245,13 +245,13 @@ Definition:     *Pipeline script from SCM*
 
 SCM:     *Git*
 
-Repo URL:    ** your GitHub repo (https://github.com/Tamiru-Assefa/devops-php-todo.git) **
+Repo URL:    **your GitHub repo (https://github.com/Tamiru-Assefa/devops-php-todo.git)**
 
 Script Path:
 
 jenkins/Jenkinsfile
 
-🧠 17. JENKINSFILE (WHAT IT DOES)
+#### 🧠 17. JENKINSFILE (WHAT IT DOES)
 
 Your pipeline does:
 
@@ -259,178 +259,239 @@ Your pipeline does:
 2. Tag with BUILD_NUMBER
 3. Push to Docker Hub
 4. Deploy Stack to Swarm
-🚀 18. RUN PIPELINE
+   
+#### 🚀 18. RUN PIPELINE
 
 Click:
 
-Build Now
-🔄 19. WHAT HAPPENS AFTER RUNNING JENKINS
+`Build Now`
+
+#### 🔄 19. WHAT HAPPENS AFTER RUNNING JENKINS
 
 Jenkins automatically executes:
 
 ✔ docker build
+
 ✔ docker push
+
 ✔ docker stack deploy
-📊 20. VERIFY DEPLOYMENT (IMPORTANT STEP)
+
+#### 📊 20. VERIFY DEPLOYMENT (IMPORTANT STEP)
 
 Run these on Manager Node:
 
-🧩 Check Swarm Nodes
-docker node ls
-🧩 Check Services
-docker service ls
-🧩 Check Running Containers
-docker service ps todo-app_web
-docker service ps todo-app_db
-🧩 Check Stack
-docker stack services todo-app
-🌐 21. APPLICATION ACCESS
+🧩 Check Swarm Nodes - 
+`docker node ls`
+
+🧩 Check Services -
+`docker service ls`
+
+🧩 Check Running Containers - 
+`docker service ps todo-app_web`
+`docker service ps todo-app_db`
+
+🧩 Check Stack - 
+`docker stack services todo-app`
+
+#### 🌐 21. APPLICATION ACCESS
 http://<ANY-NODE-IP>:8080
 
-### Some rivision on docker stack yml and jenkins pipeline file
-explaining docker-stack.yml file.
+### Some revision on Docker Stack YML and Jenkins pipeline file
 
+#### Explaining the docker-stack.yml file.
 📦 Image Versioning (CI/CD Integration)
-image: yourdockerhubusername/php-todo:${IMAGE_TAG}
+`image: yourdockerhubusername/php-todo:${IMAGE_TAG}`
+
 🧠 Explanation:
-The IMAGE_TAG is passed from the Jenkins pipeline
-It is dynamically set using the Jenkins build number
-This allows every build to produce a unique versioned Docker image
+
+The IMAGE_TAG is passed from the Jenkins pipeline. 
+It is dynamically set using the Jenkins build number. 
+This allows every build to produce a unique versioned Docker image.
 
 👉 Example:
 
+```
 Build #15 → php-todo:15
 Build #16 → php-todo:16
+```
 
 ✔ This enables:
 
-version tracking
-rollback capability
-CI/CD traceability
-🔁 Replicas (Scalability)
-replicas: 2
+- version tracking
+- rollback capability
+- CI/CD traceability
+
+  
+**🔁 Replicas (Scalability)**
+
+`replicas: 2`
 🧠 Explanation:
-Runs 2 identical containers of the PHP web app
+
+Runs 2 identical containers of the PHP web app. 
 Containers are distributed across worker nodes
+
+
 Provides:
-load balancing
-high availability
-fault tolerance
+- load balancing
+- high availability
+- fault tolerance
 
 👉 If one container fails, the other continues serving traffic.
 
 ⚙️ Resource Limits (Stability Control)
+```
 resources:
   limits:
     cpus: "0.50"
     memory: 512M
+```
 🧠 Explanation:
-Restricts container resource usage
-Prevents a single container from consuming all node resources
+
+Restricts container resource usage. 
+Prevents a single container from consuming all node resources.
+
 
 ✔ Benefits:
 
-avoids system overload
-improves cluster stability
-ensures fair resource sharing
-🔄 Restart Policy (Self-Healing)
+- avoids system overload
+- improves cluster stability
+- ensures fair resource sharing
+
+  
+**🔄 Restart Policy (Self-Healing)**
+```
 restart_policy:
   condition: on-failure
+```
 🧠 Explanation:
-Automatically restarts container if it crashes
-Helps maintain service uptime
+
+Automatically restarts container if it crashes. 
+Helps maintain service uptime. 
 
 ✔ Example:
 
 PHP crash → container automatically restarted by Swarm
+
+
 📍 Placement Constraints (Node Targeting)
+```
 placement:
   constraints:
     - node.labels.role == web
+```
 🧠 Explanation:
-Ensures the service runs ONLY on nodes labeled as web
-Used to separate responsibilities across cluster nodes
+
+Ensures the service runs ONLY on nodes labeled as web. 
+Used to separate responsibilities across cluster nodes.
 
 👉 Example:
 
 worker1 → web containers
+
 worker2 → web containers
+
 manager → not used for web service
+
 
 ✔ This gives:
 
-better control
-structured cluster design
-workload separation
-🏷️ Service Labels (Metadata)
+- better control
+- structured cluster design
+- workload separation
+  
+**🏷️ Service Labels (Metadata)**
+```
 labels:
   - "app=todo"
   - "tier=frontend"
+```
 🧠 Explanation:
-Adds metadata to the service
-Used for:
-monitoring (Prometheus/Grafana)
-service identification
+Adds metadata to the service. 
+
+Used for: - 
+monitoring (Prometheus/Grafana) &&
+service identification && 
 observability tools
 
 👉 Example:
 
 app=todo → identifies application
+
 tier=frontend → identifies layer
-🚀 Rolling Updates (Zero Downtime Deployment)
+
+**🚀 Rolling Updates (Zero Downtime Deployment)**
+```
 update_config:
   parallelism: 1
   delay: 10s
   order: start-first
   failure_action: rollback
+```
 🧠 Explanation:
-parallelism: 1
+`parallelism: 1` 
 → updates one container at a time
-delay: 10s
+
+`delay: 10s`
 → waits between updates
-order: start-first
+
+`order: start-first`
 → starts new container before stopping old one
-failure_action: rollback
+
+`failure_action: rollback`
 → automatically reverts if update fails
 
 ✔ This ensures:
 
-zero downtime deployment
-safe production updates
-automatic recovery
-🔁 Rollback Configuration
+- zero downtime deployment
+- safe production updates
+- automatic recovery
+- 
+**🔁 Rollback Configuration**
+  
+```
 rollback_config:
   parallelism: 1
   delay: 5s
+  ```
 🧠 Explanation:
-If deployment fails, Swarm restores previous version
+
+If deployment fails, Swarm restores previous version. 
 Rollback happens gradually (one container at a time)
 
 ✔ This prevents:
 
-full system failure
-broken deployments going live
-❤️ Health Check (Service Monitoring)
+- full system failure
+- broken deployments going live
+
+  
+**❤️ Health Check (Service Monitoring)**
+```
 healthcheck:
   test: ["CMD", "curl", "-f", "http://localhost"]
   interval: 30s
   timeout: 10s
   retries: 3
+```
 🧠 Explanation:
-curl -f http://localhost
+
+`curl -f http://localhost` 
 → checks if the web app is responding
-interval: 30s
+
+`interval: 30s` 
 → runs check every 30 seconds
-timeout: 10s
+
+`timeout: 10s`
 → max time allowed for response
-retries: 3
+
+`retries: 3` 
 → fails only after 3 unsuccessful attempts
+
 
 ✔ This enables:
 
-automatic container health detection
-restart of unhealthy services
-improved reliability
+- automatic container health detection
+- restart of unhealthy services
+- improved reliability
 
 
 ----- 
