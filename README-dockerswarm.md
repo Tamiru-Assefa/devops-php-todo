@@ -139,8 +139,7 @@ This diagram represents the internal Docker Swarm cluster structure.
   - Orchestration  
   - MySQL database  
   - Prometheus  
-  - Grafana  
-  - Swarm Visualizer  
+  - Grafana   
 
 - Multiple Worker nodes running:
   - PHP application replicas  
