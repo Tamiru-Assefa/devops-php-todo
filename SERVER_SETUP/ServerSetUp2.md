@@ -595,3 +595,21 @@ GitHub push → Jenkins webhook (or polling)
 - No manual deployment required
 - continuous delivery workflow
 
+---
+# SUMMARY
+```
+Developer pushes code → GitHub  
+→ Jenkins Pipeline triggered  
+→ Jenkins pulls repo  
+→ Build Docker image  
+→ Tag image (e.g., v1, build number)  
+→ Push image to Docker Hub  
+→ Jenkins deploys Docker Stack  
+
+→ Swarm pulls images from Docker Hub  
+→ Swarm creates overlay network  
+→ Swarm creates services  
+→ Swarm attaches volumes (e.g., MySQL → /var/lib/mysql)  
+→ Swarm schedules containers across nodes  
+→ Services run across nodes (web replicated, db single instance)
+```
