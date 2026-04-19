@@ -342,6 +342,20 @@ http://prometheus:9090
 
 !! Now Grafana will start showing metrics
 
+---
+## Continuous Deployment Workflow (Code Update → Auto Deploy)
+```
+Code Change → GitHub Push
+            ↓
+        Jenkins Trigger
+            ↓
+    Build & Push Image
+            ↓
+    Swarm Rolling Update
+            ↓
+     Application Updated Live
+```
+
 ---  DONE!!! --- 
 
 # Some revision on Docker Stack YML and Jenkins pipeline file
