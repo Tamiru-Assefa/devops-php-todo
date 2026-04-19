@@ -296,6 +296,52 @@ Run these on Manager Node:
 #### 🌐 21. APPLICATION ACCESS
 http://<ANY-NODE-IP>:8080
 
+## Configure Visualizers for Monitoring (Grafana, Prometheus & cAdvisor )
+After you finish this all set up go to You manager host machine and run this cmd on the same directory where the monitoring-stack.yml found.
+
+`docker stack deploy -c monitoring-stack.yml monitoring`
+
+👉 That will:
+
+- create Prometheus
+- create Grafana
+- create cAdvisor (on all nodes)
+- attach overlay network
+- mount volumes
+- load prometheus.yml
+
+**AFTER DEPLOY — ACCESS**
+
+You can access everything using Manager Public IP:
+```
+Grafana     → http://MANAGER-IP:3000
+Prometheus  → http://MANAGER-IP:9090
+cAdvisor → http://ANY-NODE-IP:8082
+```
+Then you can verify by using these commands:-
+```
+docker stack services monitoring
+docker service logs monitoring_prometheus
+```
+### GRAFANA FIRST LOGIN (ONE TIME)
+
+Open:
+http://MANAGER-IP:3000
+
+Login:
+```
+username: admin
+password: admin
+```
+👉 Then:
+
+Add Data Source → Prometheus
+
+URL:
+http://prometheus:9090
+
+!! Now Grafana will start showing metrics
+
 ---  DONE!!! --- 
 
 # Some revision on Docker Stack YML and Jenkins pipeline file
