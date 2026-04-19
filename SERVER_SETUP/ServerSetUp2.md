@@ -12,12 +12,13 @@ This guide explains how to set up a fresh Linux environment for Project 2, which
 ### 1. EC2 CREATION (VERY IMPORTANT ORDER)
 
 You start by creating 3 EC2 instances:
-
+```On AWS
 ETH-North-Manager   → Swarm Manager
 ETH-WEST-worker1    → Worker Node 1
 ETH-Addis-worker2   → Worker Node 2
+```
 
-** ⚙️ EC2 Configuration (ALL 3 INSTANCES) **
+**⚙️ EC2 Configuration (ALL 3 INSTANCES)**
 When creating each EC2:
 
 🧠 Basic Settings
@@ -30,16 +31,17 @@ When creating each EC2:
 - 🔐 Security Group (IMPORTANT)
 
 Create ONE security group and attach to all 3:
-
+```ON AWS
   SSH (22)        → Your IP
   HTTP (8080)     → Anywhere
   Grafana (3000)  → Your IP
   Prometheus (9090) → Your IP
   Visualizer (8081) → Your IP
   cAdvisor (8082)   → Your IP
+```
 
 
-Swarm:
+Swarm:-   
 2377, 7946, 4789 → All nodes (SG-to-SG allowed)
 
 ---
@@ -55,7 +57,9 @@ We install:
 ✔ Basic tools (git, curl)
 
 
+
  MANAGER NODE ONLY
+ 
 ✔ docker swarm init
 
 ✔ Jenkins
@@ -67,6 +71,7 @@ We install:
 ✔ Stack deployment control
 
  Manager = brain of cluster
+ 
 
  WORKER NODES ONLY
  
@@ -209,7 +214,7 @@ On Manager Node only:
 
 Before CI/CD works, login once manually on the Manager Node:
 
-`docker login -u yourdockerhubusername`
+`docker login -u ybtamiru`
 
 👉 This stores credentials so Jenkins can push images.
 
@@ -222,13 +227,13 @@ Now go to Jenkins:
 
 Steps:
 
-Click New Item
+Click     *New Item*
 
-Name: *todo-swarm-pipeline*
+Name:     *todo-swarm-pipeline*
 
-Select: *Pipeline*
+Select:     *Pipeline*
 
-Click OK
+Click    *OK*
 
 
 
@@ -236,11 +241,11 @@ Click OK
 
 In Pipeline section:
 
-Definition: *Pipeline script from SCM*
+Definition:     *Pipeline script from SCM*
 
-SCM: *Git*
+SCM:     *Git*
 
-Repo URL: ** your GitHub repo (https://github.com/Tamiru-Assefa/devops-php-todo.git) **
+Repo URL:    ** your GitHub repo (https://github.com/Tamiru-Assefa/devops-php-todo.git) **
 
 Script Path:
 
