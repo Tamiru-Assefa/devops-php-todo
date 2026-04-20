@@ -276,7 +276,7 @@ Jenkins automatically executes:
 
 ✔ docker stack deploy
 
-#### 📊 20. VERIFY DEPLOYMENT (IMPORTANT STEP)
+#### 📊 20. VERIFY DEPLOYMENT / Scaling (IMPORTANT STEP)
 
 Run these on Manager Node:
 
@@ -290,8 +290,14 @@ Run these on Manager Node:
 `docker service ps todo-app_web`
 `docker service ps todo-app_db`
 
+`docker service inspect todo-app-web`   Shows all info in JSON/YAML format
+
 🧩 Check Stack - 
 `docker stack services todo-app`
+
+🧩 Horizontal Scaling - 
+`dockerservice scale todo-app=10`
+
 
 #### 🌐 21. APPLICATION ACCESS
 http://<ANY-NODE-IP>:8080
