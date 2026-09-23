@@ -1,8 +1,11 @@
-#Base Image: We use the apache php installed from dockerhub
+# Base PHP + Apache image
 FROM php:8.2-apache
 
-#Copy the app files to the apache folder
-COPY ./app /var/www/html
+# Install MySQL extensions required by the application
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-#Exposing the image to port 80(HTTP)
+# Copy PHP application
+COPY ./Apps /var/www/html
+
+# Expose HTTP
 EXPOSE 80
