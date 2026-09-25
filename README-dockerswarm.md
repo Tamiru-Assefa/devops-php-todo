@@ -208,8 +208,7 @@ devops-php-todo
 │
 ├── Architecture/               # Architecture diagrams
 │
-├── Jenkins/                    # Jenkins configurations
-│   ├── Jenkinsfile             # Pipeline definition ✅ NEW
+├── Jenkins                     # Jenkins configurations
 │   ├── JENKINS1.md             # Project 1 explanation (Compose)
 │
 ├── README-Jenkins-compose-deployment.md     # Project 1 documentation
